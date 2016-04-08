@@ -31,6 +31,12 @@ namespace TestInpvp
 
         private Timer broadcastTimer;
 
+        private Level level;
+
+        private int width, height, length;
+
+        private PlayerLocation spawn;
+
         protected override void OnEnable()
         {
             Logger.Info("Starting InPvP test plugin...");
@@ -49,6 +55,28 @@ namespace TestInpvp
             config.WriteElementString("messageDelay", "3000");
             config.Close();
             broadcastTimer = new Timer(broadcastMessages, null, 10000, 20000);
+            width = 7;
+            height = 7;
+            length = 7;
+        }
+
+        private void OnPlayerJoin(object o, PlayerEventArgs e)
+        {
+            Level level = e.Level;
+            Vector3 spawn = (BlockCoordinates)e.Player.SpawnPosition;
+            for (double x = spawn.X - width / 2; x < spawn.X + width / 2; x++)
+            {
+                for (double y = spawn.Y - height / 2; y < spawn.Y; y++)
+                {
+                    for (double z = spawn.Z - length / 2; z < spawn.Z + length / 2; z++)
+                    {
+                        BlockCoordinates barrier = new BlockCoordinates(Convert.ToInt32(x), Convert.ToInt32(y), Convert.ToInt32(z));
+                        var bar = new InvisibleBedrock { Coordinates = barrier };
+                        level.SetBlock(bar);
+                    }
+                }
+            }
+
         }
 
         private void broadcastMessages(object state)

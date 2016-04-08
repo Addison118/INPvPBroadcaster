@@ -14,5 +14,6 @@ C:\Users\addison\Downloads\minet-server\Plugins\TestInpvp\TestInpvp\bin\Debug\Mi
 C:\Users\addison\Downloads\minet-server\minet\Plugins\TestInpvp.dll.config
 C:\Users\addison\Downloads\minet-server\minet\Plugins\TestInpvp.dll
 C:\Users\addison\Downloads\minet-server\minet\Plugins\TestInpvp.pdb
+C:\Users\addison\Downloads\minet-server\Plugins\TestInpvp\TestInpvp\obj\Debug\TestInpvp.csprojResolveAssemblyReference.cache
 C:\Users\addison\Downloads\minet-server\Plugins\TestInpvp\TestInpvp\obj\Debug\TestInpvp.dll
 C:\Users\addison\Downloads\minet-server\Plugins\TestInpvp\TestInpvp\obj\Debug\TestInpvp.pdb
