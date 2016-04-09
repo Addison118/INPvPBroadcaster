@@ -36,6 +36,9 @@ namespace TestInpvp
 
         private PlayerLocation spawn;
 
+        XmlDocument xml = new XmlDocument();
+        XmlDocument config = new XmlDocument();
+
         protected override void OnEnable()
         {
             Logger.Info("Starting InPvP test plugin...");
@@ -54,13 +57,21 @@ namespace TestInpvp
                 XmlWriter config = XmlWriter.Create("inpvp.xml", settings);
                 config.WriteStartDocument();
                 config.WriteStartElement("config");
-                config.WriteElementString("messageDelay", "3000");
+                config.WriteElementString("messageDelay", "5"); //In seconds
+                config.WriteElementString("barrierHeight", "7");
+                config.WriteElementString("barrierWidth", "7");
+                config.WriteElementString("barrierLength", "7");
                 config.Close();
             }
             broadcastTimer = new Timer(broadcastMessages, null, 10000, 20000);
-            width = 7;
-            height = 7;
-            length = 7;
+            config.Load("inpvp.xml");
+            XmlNodeList nodes = xml.SelectNodes("config");
+            foreach(XmlNode node in nodes)
+            {
+                width = Int32.Parse(node["barrierWidth"].InnerText);
+                height = Int32.Parse(node["barrierHeight"].InnerText);
+                length = Int32.Parse(node["barrierLength"].InnerText);
+            }
         }
 
         private void OnPlayerJoin(object o, PlayerEventArgs e)
@@ -87,8 +98,6 @@ namespace TestInpvp
 
             foreach(var level in Context.LevelManager.Levels)
             {
-                XmlDocument xml = new XmlDocument();
-                XmlDocument config = new XmlDocument();
                 config.Load("inpvp.xml");
                 xml.Load("broadcast.xml");
                 XmlNodeList nodeList = config.GetElementsByTagName("messageDelay");
@@ -107,7 +116,7 @@ namespace TestInpvp
                     {
                         string currentMessage = msg.InnerText;
                         level.BroadcastMessage(currentMessage);
-                        Thread.Sleep(Int32.Parse(messageDelay));
+                        Thread.Sleep(Int32.Parse(messageDelay) * 1000); //Convert the seconds given to milliseconds
                     }
                 }
             }
