@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Xml;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,8 +32,6 @@ namespace TestInpvp
 
         private Timer broadcastTimer;
 
-        private Level level;
-
         private int width, height, length;
 
         private PlayerLocation spawn;
@@ -41,19 +40,23 @@ namespace TestInpvp
         {
             Logger.Info("Starting InPvP test plugin...");
             XmlWriterSettings settings = new XmlWriterSettings();
-            settings.Indent = true;
-            XmlWriter writer = XmlWriter.Create("broadcast.xml", settings);
-            writer.WriteStartDocument();
-            writer.WriteStartElement("Messages");
-            writer.WriteElementString("Message", "This is the 1st message");
-            writer.WriteElementString("Message", "This is the 2nd message");
-            writer.WriteElementString("Message", "This is the 3rd message");
-            writer.Close();
-            XmlWriter config = XmlWriter.Create("inpvp.xml", settings);
-            config.WriteStartDocument();
-            config.WriteStartElement("config");
-            config.WriteElementString("messageDelay", "3000");
-            config.Close();
+            if (!File.Exists("broadcast.xml")) {
+                settings.Indent = true;
+                XmlWriter writer = XmlWriter.Create("broadcast.xml", settings);
+                writer.WriteStartDocument();
+                writer.WriteStartElement("Messages");
+                writer.WriteElementString("Message", "This is the 1st message");
+                writer.WriteElementString("Message", "This is the 2nd message");
+                writer.WriteElementString("Message", "This is the 3rd message");
+                writer.Close();
+            }
+            if (!File.Exists("inpvp.xml")) {
+                XmlWriter config = XmlWriter.Create("inpvp.xml", settings);
+                config.WriteStartDocument();
+                config.WriteStartElement("config");
+                config.WriteElementString("messageDelay", "3000");
+                config.Close();
+            }
             broadcastTimer = new Timer(broadcastMessages, null, 10000, 20000);
             width = 7;
             height = 7;
